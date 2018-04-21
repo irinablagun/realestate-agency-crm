@@ -1,0 +1,19 @@
+@import 'reset.scss';
+@import 'grid.scss';
+@import 'variables.scss';
+@import 'typography.scss';
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+	height: 100%;
+}
+
+#app,
+body {
+	min-height: 100%;
+}
