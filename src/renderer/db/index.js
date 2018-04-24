@@ -1,12 +1,31 @@
-export { default as CategoryParamModel } from './models/category_param';
-export { default as CategoryModel } from './models/category';
-export { default as ModeProductModel } from './models/move_product';
-export { default as ParamModel } from './models/param';
-export { default as ProductModel } from './models/product';
-export { default as ProviderModel } from './models/provider';
+import Sequelize from 'sequelize';
 
-export { default as UnitModel } from './models/unit';
-export { default as UserModel } from './models/user';
-export { default as ClientModel } from './models/client';
+const models = {
+    User: require('./models/user').default,
+    Client: require('./models/client').default,
+    RealtyCategory: require('./models/realtyCategory').default,
+    Realty: require('./models/realty').default,
+    Stage: require('./models/stage').default,
+    Transaction: require('./models/transaction').default,
+    Comments: require('./models/comments').default,
+};
 
-export { default as ValueModel } from './models/value';
+export const sequelize = new Sequelize('database', null, null, {
+    dialect: 'sqlite',
+    operatorsAliases: Sequelize.Op,
+    storage: 'db/database.sqlite',
+    logging: false
+});
+
+Object.keys(models).forEach((modelName) => {
+    const model = models[modelName](sequelize, Sequelize);
+
+    if ('associate' in model) {
+        model.associate(models);
+    }
+
+    models[modelName] = model;
+});
+
+window.models = models;
+export default models;

@@ -1,21 +1,20 @@
-const CategoryModel = require('./models/category');
-const ProductModel = require('./models/product');
-const UserModel = require('./models/user');
-const ClientModel = require('./models/client');
-const ParamModel = require('./models/param');
+import models from './';
 
 export default function() {
   return Promise.all([
-    UserModel.create({
+    models.User.create({
       email: 'test@test.com',
       password: '123',
-      fn: 'Irina',
-      ln: 'Blagun',
+      fio: 'Blagun Irina',
     }),
-    ClientModel.create({
-      name: 'clientt',
-      desc: '123',
-      delete: 0
+    models.Stage.create({
+      name: 'Открыта',
+    }),
+    models.Stage.create({
+      name: 'Оплата',
+    }),
+    models.Stage.create({
+      name: 'Завершена',
     })
   ]).then(function() {
     console.log('SQlLite init data');

@@ -1,4 +1,4 @@
-import { UserModel } from '../../db';
+import models from '../../db';
 import { createJwtToken, verifyJwtToken } from '../../libs/jwt';
 
 const state = {
@@ -14,14 +14,13 @@ const getters = {
     return state.user;
   },
   userName(state) {
-    return state.user && [state.user.fn, state.user.ln]
-      .filter((w) => w).join(' ')
+    return state.user && state.user.fio;
   }
 };
 
 const actions = {
   login({ commit, dispatch }, { email, password }) {
-    return UserModel.findOne({
+    return models.User.findOne({
       where: {
         email
       }
@@ -46,7 +45,7 @@ const actions = {
     commit('logout');
   },
   loadUser({ commit }, payload) {
-    return UserModel.findById(payload, { attributes: ['id', 'fn', 'ln', 'pn', 'email'] }).then((user) => {
+    return models.User.findById(payload, { attributes: ['id', 'fio', 'email'] }).then((user) => {
       commit('setUser', user.dataValues);
     })
   },

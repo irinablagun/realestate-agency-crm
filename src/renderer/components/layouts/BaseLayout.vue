@@ -15,6 +15,10 @@
 <style lang="scss">
     .base-layout-container {
         background: #fff;
+        margin-top: 40px
+    }
+    .container {
+        max-width: 1500px;
     }
 </style>
 

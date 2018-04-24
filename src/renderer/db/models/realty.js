@@ -1,13 +1,13 @@
 export default (sequelize, DataTypes) => {
-  const Client = sequelize.define(
-    'client',
+  const Realty = sequelize.define(
+    'realty',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      fio: {
+      address: {
         type: DataTypes.STRING,
         validate: {
           notEmpty: true
@@ -25,7 +25,19 @@ export default (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
-      phone: DataTypes.STRING,
+      rooms: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: true
+        }
+      },
+      description: DataTypes.STRING,
+      price: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: true
+        }
+      },
       created_date: DataTypes.DATE,
       deleted: {
         type: DataTypes.BOOLEAN,
@@ -39,12 +51,16 @@ export default (sequelize, DataTypes) => {
     }
   );
 
-  Client.associate = (models) => {
-    Client.belongsTo(models.User, {
-      foreignKey: 'responsible_id',
+  Realty.associate = (models) => {
+    Realty.belongsTo(models.User, {
+      foreignKey: 'creator_id',
+      targetKey: 'id'
+    });
+    Realty.belongsTo(models.RealtyCategory, {
+      foreignKey: 'category_id',
       targetKey: 'id'
     });
   };
 
-  return Client;
+  return Realty;
 }

@@ -5,11 +5,10 @@
     </router-link>
     <div class="header-container">
       <nav class="header-menu">
-        <router-link to="/catalog/units">Единицы измерения</router-link>
-        <router-link to="/catalog/realty">Объекты недвижимости</router-link>
-        <router-link to="/catalog/clients">Клиенты</router-link>
-        <router-link to="/catalog/transactions">Сделки</router-link>
-        <router-link to="/catalog/tasks">Задачи</router-link>
+        <router-link to="/layout/realty">Объекты недвижимости</router-link>
+        <router-link to="/layout/clients">Клиенты</router-link>
+        <router-link to="/layout/transactions">Сделки</router-link>
+        <!-- <router-link to="/catalog/tasks">Задачи</router-link> -->
       </nav>
       <div class="header-profile">
         <el-dropdown trigger="click" @command="handleCommand">

@@ -1,15 +1,10 @@
-import * as db from './index.js';
+import { sequelize } from './';
 
 export default function() {
-  return Promise.all(
-    [
-      ...db
-    ].map((m) => m.sync())
-  )
+  return sequelize.sync()
+    // .then(() => require('./init_data').default())
     .then(() => {
-      console.log('SQlLite initialize models');
     })
-    .then(() => require('./init_data').default())
     .catch((err) => {
       console.log(err);
     });

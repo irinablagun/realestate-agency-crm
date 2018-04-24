@@ -2,6 +2,7 @@ import Vue from 'vue';
 import dotenv from 'dotenv';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/ru-RU';
 
 dotenv.config({
   path: __dirname + '/../../.env'
@@ -13,7 +14,7 @@ import store from './store';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.config.productionTip = false;
-Vue.use(Element, { size: 'small' });
+Vue.use(Element, { size: 'small', locale });
 
 Promise.resolve()
   .then(() => require('./db/init').default())

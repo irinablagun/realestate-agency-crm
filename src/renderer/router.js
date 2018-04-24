@@ -20,37 +20,42 @@ export default new Router({
           component: require('@/components/Test').default
         },
         {
-          path: 'catalog',
-          name: 'catalog',
+          path: 'layout',
+          name: 'layout',
           component: require('@/components/layouts/BaseLayout').default,
           children: [
             {
-              path: 'units',
-              name: 'units',
-              component: require('@/components/catalog/Units').default
-            },
-            {
               path: 'realty',
               name: 'realty',
-              component: require('@/components/catalog/Realty').default
+              component: require('@/components/realty/Realty').default
             },
             {
               path: 'clients',
               name: 'clients',
-              component: require('@/components/catalog/Clients').default
+              component: require('@/components/clients/Clients').default
+            },
+            {
+              path: '/clients/:id',
+              name: 'clientcard',
+              component: require('@/components/clients/ClientCard').default
+            },
+            {
+              path: '/realty/:id',
+              name: 'realtycard',
+              component: require('@/components/realty/RealtyCard').default
             },
             {
               path: 'transactions',
               name: 'transactions',
-              component: require('@/components/catalog/Transactions').default
+              component: require('@/components/transactions/Transaction').default
             },
             {
-              path: 'tasks',
-              name: 'tasks',
-              component: require('@/components/catalog/Tasks').default
+              path: '/transactions/:id',
+              name: 'transactioncard',
+              component: require('@/components/transactions/TransactionCard').default
             }
           ]
-        }
+        },
       ]
     },
     {
