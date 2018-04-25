@@ -14,7 +14,7 @@ export const clientStatuses = [
         label: 'В поиске'
     }, {
         value: 2,
-        label: 'Не активен'
+        label: 'Не активен' // когда сделка завершена
     }, {
         value: 3,
         label: 'Думает'
@@ -23,7 +23,7 @@ export const clientStatuses = [
         label: 'Оплата'
     }, {
         value: 5,
-        label: 'Не назначен'
+        label: 'Не назначен' // когда он просто висит в базе
     }
 ];
 

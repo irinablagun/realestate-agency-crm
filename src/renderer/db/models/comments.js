@@ -27,7 +27,15 @@ export default (sequelize, DataTypes) => {
           targetKey: 'id'
         });
         Comments.belongsTo(models.Transaction, {
-          foreignKey: 'comment_id',
+          foreignKey: 'transaction_id',
+          targetKey: 'id'
+        });
+        Comments.belongsTo(models.Client, {
+          foreignKey: 'client_id',
+          targetKey: 'id'
+        });
+        Comments.belongsTo(models.Realty, {
+          foreignKey: 'realty_id',
           targetKey: 'id'
         });
     };

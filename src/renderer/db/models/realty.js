@@ -13,12 +13,6 @@ export default (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
-      type: {
-        type: DataTypes.INTEGER,
-        validate: {
-          notEmpty: true
-        }
-      },
       status: {
         type: DataTypes.INTEGER,
         validate: {
@@ -54,6 +48,10 @@ export default (sequelize, DataTypes) => {
   Realty.associate = (models) => {
     Realty.belongsTo(models.User, {
       foreignKey: 'creator_id',
+      targetKey: 'id'
+    });
+    Realty.belongsTo(models.Client, {
+      foreignKey: 'seller_id',  // конфликт
       targetKey: 'id'
     });
     Realty.belongsTo(models.RealtyCategory, {

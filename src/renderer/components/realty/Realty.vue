@@ -3,18 +3,24 @@
     <div class="page-header-container">
       <div class="page-header">
         <el-row>
-          <el-col :span="12"><h1>Объекты недвижимости</h1></el-col>
+          <el-col><h1>Объекты недвижимости</h1></el-col>
         </el-row>
-        <el-button type="primary" @click="openModal('test-modal-controller')">Добавить</el-button>
+        <el-button class="headerButton" type="primary" @click="openModal('test-modal-controller')">Добавить</el-button>
       </div>
-    <el-input class="search"
-      placeholder="Поиск"
-      prefix-icon="el-icon-search"
-      v-model="search">
-    </el-input>
+      <el-input class="search"
+        placeholder="Поиск"
+        prefix-icon="el-icon-search"
+        v-model="search">
+      </el-input>
+      <div>
+        <el-checkbox class="checkbox" v-model="sold" @change="loadRealty">Показать проданные</el-checkbox>
+
+        <el-button :disabled="!(row)" type="primary" icon="el-icon-edit" @click="handleEdit(row)"></el-button>
+        <el-button :disabled="!(row)" type="danger" icon="el-icon-delete" @click="handleDelete(row)"></el-button>
+      </div>
     </div>
 
-    <el-table :data="data" style="width: 100%" :default-sort = "{prop: 'created_date', order: 'descending'}">
+    <el-table highlight-current-row @row-click="handleRowSelect" @row-dblclick="handleRowClick" :data="data" style="width: 100%" :default-sort = "{prop: 'created_date', order: 'descending'}">
       <el-table-column prop="address" label="Адрес" sortable width="400"></el-table-column>
 
       <el-table-column label="Категория" width="150">
@@ -40,20 +46,6 @@
           {{ createdDate(scope.row.created_date) }}
         </template>
       </el-table-column>
-      <el-table-column label="" width="102">
-        <template slot-scope="scope">
-          <el-dropdown @command="(command) => handleCommand(command, scope.row)">
-            <span class="el-dropdown-link">
-              Действия<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="preview">Просмотр</el-dropdown-item>
-              <el-dropdown-item command="edit">Изменить</el-dropdown-item>
-              <el-dropdown-item command="delete">Удалить</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
     </el-table>
     <realty-manage-form @close="this.loadRealty"/>
   </div>
@@ -77,7 +69,9 @@
         data: [],
         form: null,
         search: '',
-        realtyCategories: {}
+        row: null,
+        realtyCategories: {},
+        sold: false
       }
     },
     watch: {
@@ -91,6 +85,9 @@
       }
     },
     methods: {
+      handleRowSelect(row) {
+        this.row = row;
+      },
       filterType(value, row) {
         return row.type == value;
       },
@@ -103,13 +100,6 @@
       createdDate(date) {
         return createdDate(date);
       },
-      // realtyTypes(value) {
-      //   const realty = realtyTypes.find((type) => {
-      //       return type.value === value
-      //   });
-
-      //   return realty && realty.label;
-      // },
       realtyStatuses(value) {
         const realty = realtyStatuses.find((status) => {
             return status.value === value
@@ -120,21 +110,12 @@
       loadRealty() {
         return models.Realty.findAll({ where: { deleted: false }, raw: true, include: [models.RealtyCategory, models.User]})
           .then((data) => {
-            this.data = data;
+            if (this.sold == true) {
+                return this.data = data;
+            }
+
+              this.data = data.filter((row) => row.status !== 4);
           })
-      },
-      handleCommand(command, row) {
-        switch(command) {
-          case 'preview': 
-            this.handleRowClick(row)
-            break;
-          case 'edit': 
-            this.handleEdit(row)
-            break;
-          case 'delete': 
-            this.handleDelete(row)
-            break;
-        }
       },
       handleRowClick(row) {
         this.$router.push({ path: `/realty/${row.id}` });
@@ -198,11 +179,14 @@
   .el-dropdown-link {
     color: #282F3B;
   }
+  /* .el-row {
+    width: 150px;
+  } */
   h1 {
     font-weight: 600;
     font-size: 20px;
     color: #282F3B;
-    width: 300px
+    /* width: 150px; */
   }
   .page-header-container {
     display: flex;
@@ -215,5 +199,29 @@
     display: flex;
     justify-content: flex-start;
     align-items: center
+  }
+  .checkbox {
+    margin-right: 30px;
+  }
+  .el-button--primary {
+    color: #fff;
+    background-color: #6978B8;
+    border-color:  #6978B8;
+  } 
+  .el-button--primary:hover, .el-button--primary:focus {
+    background-color: #495692;
+    border-color:  #495692;
+  } 
+  .el-button--danger {
+    color: #fff;
+    background-color: #D94640;
+    border-color:  #D94640;
+  } 
+  .el-button--danger:hover, .el-button--danger:focus {
+    background-color: #C43733;
+    border-color:  #C43733;
+  } 
+  .headerButton {
+    margin-left: 50px;
   }
 </style>

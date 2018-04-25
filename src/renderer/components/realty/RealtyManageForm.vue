@@ -16,6 +16,16 @@
           </el-option>
         </el-select>
       </el-form-item>  
+      <el-form-item label="Продавец" prop="seller">
+        <el-select placeholder="Продавец" v-model="form['seller.id']" @click="loadSellers" filterable remote>
+          <el-option
+            v-for="item in sellers"
+            :key="item.id"
+            :label="item.fio"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>  
       <el-form-item label="Комнат" prop="rooms">
         <el-input v-model="form.rooms" ></el-input>
       </el-form-item>
@@ -52,21 +62,16 @@
         form: {
           address: null,
           'realty_category.id': null,
-          type: null,
+          'seller.id': null,
           status: null,
           rooms: null,
           price: null,
           description: null,
         },
         categories: [],
+        sellers: [],
         rules: {
           address: [
-            { required: true, message: 'Поле обязательно для заполнения', trigger: 'blur' },
-          ],
-          type: [
-            { required: true, message: 'Поле обязательно для заполнения', trigger: 'blur' },
-          ],
-          status: [
             { required: true, message: 'Поле обязательно для заполнения', trigger: 'blur' },
           ],
           rooms: [
@@ -92,6 +97,12 @@
         return  models.RealtyCategory.findAll({ raw: true })
           .then((data) => {
             this.categories = data;
+          })
+      },
+      loadSellers() {
+        return  models.Client.findAll({ where: { deleted: false, status: 5 }, raw: true })
+          .then((data) => {
+            this.sellers = data;
           })
       }
     },
@@ -134,12 +145,12 @@
         });
       },
       createRealty({ address, rooms, price, description, ...form }) {
-        return models.Realty.create({ address, category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
+        return models.Realty.create({ address, seller_id: form['seller.id'], category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
           .then((realty) => realty.dataValues);
       },
-      updateRealty({ id, address, category, rooms, price, description }) {
+      updateRealty({ id, address, rooms, price, description, ...form }) {
         return models.Realty.update(
-          { address, rooms, category_id: category, price, description },
+          { address, rooms, seller_id: form['seller.id'], category_id: form['realty_category.id'], price, description },
           {
             where: { id }
           }

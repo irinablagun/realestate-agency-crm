@@ -5,7 +5,7 @@ export default function() {
     models.User.create({
       email: 'test@test.com',
       password: '123',
-      fio: 'Blagun Irina',
+      fio: 'Благун Ирина Олеговна',
     }),
     models.Stage.create({
       name: 'Открыта',
@@ -15,6 +15,9 @@ export default function() {
     }),
     models.Stage.create({
       name: 'Завершена',
+    }),
+    models.Stage.create({
+      name: 'Закрыта',
     })
   ]).then(function() {
     console.log('SQlLite init data');
