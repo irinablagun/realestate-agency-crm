@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login">
     <el-form :model="form" :rules="rules" ref="form">
       <el-form-item label="E-mail" prop="email">
         <el-input v-model="form.email"></el-input>
@@ -53,3 +53,13 @@
     },
   }
 </script>
+
+<style>
+  .login {
+    position: absolute;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+</style>
