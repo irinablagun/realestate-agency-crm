@@ -53,6 +53,11 @@ export default new Router({
               path: '/transactions/:id',
               name: 'transactioncard',
               component: require('@/components/transactions/TransactionCard').default
+            },
+            {
+              path: 'users',
+              name: 'users',
+              component: require('@/components/users/Users').default
             }
           ]
         },

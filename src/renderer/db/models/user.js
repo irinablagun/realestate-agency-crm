@@ -46,21 +46,28 @@ export default (sequelize, DataTypes) => {
       }
     }
   );
-  
+
+  User.associate = (models) => {
+    User.belongsTo(models.Group, {
+      foreignKey: 'group_id',
+      targetKey: 'id'
+    });
+  }
+
   User.prototype.createSalt = function() {
     return crypto.randomBytes(16).toString('base64');
   };
-  
+
   User.prototype.encryptPassword = function(password) {
     return crypto
       .createHmac('sha1', this.salt)
       .update(password)
       .digest('hex');
   };
-  
+
   User.prototype.authenticate = function(password) {
     return this.encryptPassword(password) === this.hashedPassword;
   };
-  
+
   return User;
 }

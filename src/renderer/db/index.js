@@ -1,6 +1,8 @@
 import Sequelize from 'sequelize';
 
 const models = {
+    Role: require('./models/role').default,
+    Group: require('./models/group').default,
     File: require('./models/file').default,
     User: require('./models/user').default,
     Client: require('./models/client').default,

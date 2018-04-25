@@ -6,6 +6,10 @@ export default function() {
       email: 'test@test.com',
       password: '123',
       fio: 'Благун Ирина Олеговна',
+      group_id: 1,
+    }),
+    models.Group.create({
+      name: 'Администратор',
     }),
     models.Stage.create({
       name: 'Открыта',

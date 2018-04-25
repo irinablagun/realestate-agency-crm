@@ -15,6 +15,9 @@ const getters = {
   },
   userName(state) {
     return state.user && state.user.fio;
+  },
+  isAdmin(state) {
+    return state.user && state.user.group_id === 1;
   }
 };
 
@@ -45,11 +48,11 @@ const actions = {
     commit('logout');
   },
   loadUser({ commit }, payload) {
-    return models.User.findById(payload, { attributes: ['id', 'fio', 'email'] }).then((user) => {
+    return models.User.findById(payload, { attributes: ['id', 'fio', 'email', 'group_id'] }).then((user) => {
       commit('setUser', user.dataValues);
     })
   },
-  authenticate({ commit, dispatch }) {  
+  authenticate({ commit, dispatch }) {
     return new Promise(async (resolve) => {
       const token = localStorage.getItem('token');
 
@@ -62,7 +65,7 @@ const actions = {
 
       resolve();
     })
-    
+
   }
 };
 

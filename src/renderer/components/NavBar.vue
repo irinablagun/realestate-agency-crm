@@ -8,6 +8,7 @@
         <router-link to="/layout/realty">Объекты недвижимости</router-link>
         <router-link to="/layout/clients">Клиенты</router-link>
         <router-link to="/layout/transactions">Сделки</router-link>
+        <router-link to="/layout/users" v-if="isAdmin">Пользователи</router-link>
         <!-- <router-link to="/catalog/tasks">Задачи</router-link> -->
       </nav>
       <div class="header-profile">
@@ -32,7 +33,7 @@
   export default {
     name: 'NavBar',
     computed: {
-      ...mapGetters(['userName'])
+      ...mapGetters(['userName', 'isAdmin'])
     },
     methods: {
       handleCommand(command) {
