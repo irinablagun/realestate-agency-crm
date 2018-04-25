@@ -13,7 +13,7 @@
     </el-input> -->
       <div class="options">
         <div class="checkboxes">
-          <el-checkbox class="checkbox" v-model="completedSuccessfully" @change="loadTransactions">Показать завершённые успешно</el-checkbox>
+          <el-checkbox class="checkbox" v-model="completedSuccessfully" @change="loadTransactions">Показать завершённые успешно</el-checkbox><br/>
           <el-checkbox class="checkbox" v-model="completed" @change="loadTransactions">Показать закрытые</el-checkbox>
         </div>
 
@@ -46,7 +46,7 @@
   import models from '../../db';
   import TransactionManageForm from './TransactionManageForm';
   import { createdDate } from '../../utils/utils';
-  
+
   import { mapActions } from 'vuex';
 
   export default {
@@ -116,7 +116,7 @@
           }
         });
       },
-      
+
       async removeTransaction(row) {
         return models.Transaction.update(
           { stage_id: 4 },
@@ -185,20 +185,20 @@
     color: #fff;
     background-color: #6978B8;
     border-color:  #6978B8;
-  } 
+  }
   .el-button--primary:hover, .el-button--primary:focus {
     background-color: #495692;
     border-color:  #495692;
-  } 
+  }
   .el-button--danger {
     color: #fff;
     background-color: #D94640;
     border-color:  #D94640;
-  } 
+  }
   .el-button--danger:hover, .el-button--danger:focus {
     background-color: #C43733;
     border-color:  #C43733;
-  } 
+  }
   .checkboxes {
     display: flex;
     flex-direction: column;
