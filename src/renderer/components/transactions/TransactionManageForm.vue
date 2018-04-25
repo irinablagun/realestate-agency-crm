@@ -72,16 +72,16 @@
         this.$refs.form.validate(async (valid) => {
 
           if (valid) {
-            const loading = this.$loading({ text: 'Создание записи' });
+            
 
             try {
               const form = Object.assign({}, this.form);
               await this.createTransaction(form);
               this.closeModal();
-              loading.close();
+              
             } catch(error) {
               console.error('TransactionManageForm', error);
-              loading.close();
+              this.closeModal();
             }
           }
         });

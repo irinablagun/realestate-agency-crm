@@ -11,6 +11,8 @@ const models = {
     Stage: require('./models/stage').default,
     Transaction: require('./models/transaction').default,
     Comments: require('./models/comments').default,
+    Invoice: require('./models/invoice').default,
+    Payment: require('./models/payment').default,
 };
 
 export const sequelize = new Sequelize('database', null, null, {

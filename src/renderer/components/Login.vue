@@ -29,8 +29,8 @@
         },
         rules: {
           email: [
-            { required: true, message: 'Email test', trigger: 'change' },
-            { type: 'email', message: 'Email test 2', trigger: 'change' },
+            { required: true, message: 'Заполните поле', trigger: 'blue' },
+            { type: 'email', message: 'Заполните поле', trigger: 'blur' },
           ],
           password: [
             { required: true, message: 'Pass test', trigger: 'change' },
