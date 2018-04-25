@@ -25,6 +25,15 @@ export default (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
+      photos: {
+        type: DataTypes.STRING,
+        get: function () {
+          return JSON.parse(this.getDataValue('photos'));
+        },
+        set: function (value) {
+          this.setDataValue('photos', JSON.stringify(value));
+        },
+      },
       description: DataTypes.STRING,
       price: {
         type: DataTypes.STRING,
@@ -37,7 +46,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
-      }
+      },
+
     },
     {
       timestamps: false,

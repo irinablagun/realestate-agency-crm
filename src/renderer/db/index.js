@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize';
 
 const models = {
+    File: require('./models/file').default,
     User: require('./models/user').default,
     Client: require('./models/client').default,
     RealtyCategory: require('./models/realtyCategory').default,

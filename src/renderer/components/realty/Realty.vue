@@ -56,7 +56,7 @@
   import RealtyManageForm from './RealtyManageForm';
   import { realtyStatuses } from '../../utils/lists';
   import { createdDate } from '../../utils/utils';
-  
+
   import { mapActions } from 'vuex';
 
   export default {
@@ -81,7 +81,7 @@
           } else {
             this.loadRealty()
           }
-          
+
       }
     },
     methods: {
@@ -144,7 +144,12 @@
           }
         });
       },
-      handleEdit(row) {
+      async handleEdit(row) {
+        if (row.photos) {
+          const photosArray = JSON.parse(row.photos);
+          row.photos = await models.File.findAll({ where: { id: { in: photosArray } }, raw: true });
+        }
+
         this.$store.dispatch('openModal', {
           name: 'test-modal-controller',
           data: row
@@ -207,20 +212,20 @@
     color: #fff;
     background-color: #6978B8;
     border-color:  #6978B8;
-  } 
+  }
   .el-button--primary:hover, .el-button--primary:focus {
     background-color: #495692;
     border-color:  #495692;
-  } 
+  }
   .el-button--danger {
     color: #fff;
     background-color: #D94640;
     border-color:  #D94640;
-  } 
+  }
   .el-button--danger:hover, .el-button--danger:focus {
     background-color: #C43733;
     border-color:  #C43733;
-  } 
+  }
   .headerButton {
     margin-left: 50px;
   }

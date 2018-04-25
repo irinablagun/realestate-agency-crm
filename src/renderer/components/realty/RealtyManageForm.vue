@@ -6,6 +6,31 @@
       <el-form-item label="Адрес" prop="address">
         <el-input v-model="form.address"></el-input>
       </el-form-item>
+
+
+
+      <el-form-item label="Фотографии" v-if="form.photos">
+        <el-table size="small" :data="form.photos" style="width: 100%" v-if="form.photos" class="photos">
+          <el-table-column prop="id" label="Фото" width="60px">
+            <template slot-scope="scope">
+              <img :src="scope.row.path" alt="" width="30px" height="30px">
+            </template>
+          </el-table-column>
+          <el-table-column prop="path" label="Файл">
+          </el-table-column>
+          <el-table-column prop="path" label="Файл">
+            <template slot-scope="scope">
+              <el-button @click="deleteFile(scope.row.id)" type="danger" icon="el-icon-delete" circle></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button @click="openDialog" size="small" type="primary">select file</el-button>
+      </el-form-item>
+
+
       <el-form-item label="Категория" prop="category">
         <el-select placeholder="Категория" v-model="form['realty_category.id']" @click="loadCategories" filterable remote>
           <el-option
@@ -15,7 +40,7 @@
             :value="item.id">
           </el-option>
         </el-select>
-      </el-form-item>  
+      </el-form-item>
       <el-form-item label="Продавец" prop="seller">
         <el-select placeholder="Продавец" v-model="form['seller.id']" @click="loadSellers" filterable remote>
           <el-option
@@ -25,7 +50,7 @@
             :value="item.id">
           </el-option>
         </el-select>
-      </el-form-item>  
+      </el-form-item>
       <el-form-item label="Комнат" prop="rooms">
         <el-input v-model="form.rooms" ></el-input>
       </el-form-item>
@@ -46,6 +71,10 @@
 <script>
   import Modal from '../../controls/Modal';
   import models from '../../db';
+  import fs from 'fs';
+  import path from 'path';
+
+  const dialog = require('electron').remote.dialog
 
   import { realtyStatuses } from '../../utils/lists';
 
@@ -67,6 +96,7 @@
           rooms: null,
           price: null,
           description: null,
+          photos: [],
         },
         categories: [],
         sellers: [],
@@ -118,6 +148,27 @@
       }
     },
     methods: {
+      deleteFile(id) {
+        this.form.photos = this.form.photos.filter((p) => p.id !== id);
+        models.File.destroy({ where: { id } });
+      },
+      openDialog() {
+        dialog.showOpenDialog({ properties: [ 'openFile' ]}, (files) => {
+          const filename = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now();
+          const filePath = `${path.resolve(__dirname, '../../../../files')}/${filename}.${files[0].split('.').pop()}`;
+
+          fs.createReadStream(files[0]).pipe(fs.createWriteStream(filePath));
+
+          models.File.create({ path: `/files/${filename}.${files[0].split('.').pop()}` }).then(({ id }) => {
+            const f = { id, path: `/files/${filename}.${files[0].split('.').pop()}` };
+            if (!this.form.photos) {
+              this.form.photos = [f]
+            } else {
+              this.form.photos.push(f);
+            }
+          })
+        });
+      },
       closeModal() {
         this.$store.dispatch('closeModal');
         this.$emit('close');
@@ -144,18 +195,48 @@
           }
         });
       },
-      createRealty({ address, rooms, price, description, ...form }) {
-        return models.Realty.create({ address, seller_id: form['seller.id'], category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
-          .then((realty) => realty.dataValues);
+      createRealty({ address, photos, rooms, price, description, ...form }) {
+        return models.Realty.create({ photos: photos.map((p) => p.id), address, seller_id: form['seller.id'], category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
+        .then((realty) => realty.dataValues);
       },
-      updateRealty({ id, address, rooms, price, description, ...form }) {
+      updateRealty({ id, photos, address, rooms, price, description, ...form }) {
         return models.Realty.update(
-          { address, rooms, seller_id: form['seller.id'], category_id: form['realty_category.id'], price, description },
+          { photos: photos.map((p) => p.id), address, rooms, seller_id: form['seller.id'], category_id: form['realty_category.id'], price, description },
           {
             where: { id }
           }
         )
       }
+// <<<<<<< Updated upstream
+//       createRealty({ address, rooms, price, description, ...form }) {
+//         return models.Realty.create({ address, seller_id: form['seller.id'], category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
+//           .then((realty) => realty.dataValues);
+//       },
+//       updateRealty({ id, address, rooms, price, description, ...form }) {
+//         return models.Realty.update(
+//           { address, rooms, seller_id: form['seller.id'], category_id: form['realty_category.id'], price, description },
+// =======
+//       createRealty({ address, photos, rooms, price, description, ...form }) {
+//         return models.Realty.create({ photos: photos.map((p) => p.id), address, category_id: form['realty_category.id'], status: realtyStatuses.value = 1, rooms: Number(rooms), price, description, created_date: new Date(), creator_id: this.$store.getters.user.id })
+//           .then((realty) => {
+//             return realty.dataValues;
+//           });
+//       },
+//       updateRealty({ id, photos, address, category, rooms, price, description }) {
+//         return models.Realty.update(
+//           { address, photos: photos.map((p) => p.id), rooms, category_id: category, price, description },
+// >>>>>>> Stashed changes
+//           {
+//             where: { id }
+//           }
+//         )
+//       }
     },
   }
 </script>
+
+<style>
+  .photos {
+    padding: 0 20px;
+  }
+</style>
