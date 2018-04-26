@@ -42,7 +42,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Продавец" prop="seller">
-        <el-select placeholder="Продавец" v-model="form['seller.id']" @click="loadSellers" filterable remote>
+        <el-select placeholder="Продавец" v-model="form['seller_id']" @click="loadSellers" filterable remote>
           <el-option
             v-for="item in sellers"
             :key="item.id"

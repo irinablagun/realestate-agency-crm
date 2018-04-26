@@ -10,8 +10,8 @@
       <el-button type="primary" @click="login">Login</el-button>
       <el-button>Forgot password</el-button>
     </el-form>
-    Login
-    <router-link to="/">Back</router-link>
+    <!-- Login
+    <router-link to="/">Back</router-link> -->
   </div>
 </template>
 

@@ -59,7 +59,7 @@
           { stage_id: 2 },
           { where: { id: this.$route.params.id } }
         );
-
+ 
         await models.Realty.update(
           { status: 3 },
           { where: { id: this.data.realty_id } }
